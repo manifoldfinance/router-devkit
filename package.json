@@ -1,0 +1,20 @@
+{
+  "name": "router-devkit",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "main": ".prettierrc.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manifoldfinance/router-devkit.git"
+  },
+  "keywords": [],
+  "author": "SEE CONTRIBUTORS",
+  "license": "SSPL-1.0",
+  "bugs": {
+    "url": "https://github.com/manifoldfinance/router-devkit/issues"
+  },
+  "homepage": "https://github.com/manifoldfinance/router-devkit#readme"
+}

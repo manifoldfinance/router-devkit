@@ -1,0 +1,9 @@
+vendor/**
+dist/*
+build/*
+*.min.js
+*.esm.js
+*.production.js
+*.css
+*.html
+*.json
