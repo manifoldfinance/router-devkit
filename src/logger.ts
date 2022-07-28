@@ -1,14 +1,13 @@
-import { ErrorCode } from './errors.js';
-
-import type { CodedEthersError } from './errors.js';
-
-import { version } from './_version.js';
+import  type { ErrorCode } from './errors.js';
+//import {ErrorInfo}  from './exception.js';
+import type CodedEthersError from './errors.js';
 
 export type BytesLike = string | Uint8Array;
 export type BigNumberish = string | number | bigint;
 export type Numeric = number | bigint;
 
 export type ErrorInfo<T> = Omit<T, 'code' | 'name' | 'message'>;
+export const version = '0.0.0-0';
 
 export enum LogLevel {
   DEBUG = 'DEBUG',
@@ -107,7 +106,7 @@ export class Logger {
     }
 
     const create = ErrorConstructors[code] || Error;
-    const error = <T>new create(message);
+    const error = <T><unknown>new create(message);
     defineReadOnly(error, 'code', code);
     if (info) {
       for (const key in info) {
@@ -127,6 +126,7 @@ export class Logger {
 
   throwArgumentError(message: string, name: string, value: any): never {
     return this.throwError(message, 'INVALID_ARGUMENT', {
+  // @ts-expect-error
       argument: name,
       value: value,
     });
@@ -146,6 +146,7 @@ export class Logger {
 
   assertArgument(condition: any, message: string, name: string, value: any): void {
     return this.assert(condition, message, 'INVALID_ARGUMENT', {
+  // @ts-expect-error
       argument: name,
       value,
     });
@@ -175,12 +176,14 @@ export class Logger {
     const operation = 'assertSafeInteger';
 
     this.assert(value >= 0 && value < 0x1fffffffffffff, message, 'NUMERIC_FAULT', {
+        // @ts-expect-error
       operation,
       fault: 'out-of-safe-range',
       value,
     });
 
     this.assert(value % 1 === 0, message, 'NUMERIC_FAULT', {
+        // @ts-expect-error
       operation,
       fault: 'non-integer',
       value,
@@ -190,6 +193,7 @@ export class Logger {
   assertNormalize(form: string): void {
     if (_normalizeForms.indexOf(form) === -1) {
       this.throwError('platform missing String.prototype.normalize', 'UNSUPPORTED_OPERATION', {
+  // @ts-expect-error
         operation: 'String.prototype.normalize',
         info: { form },
       });
@@ -205,6 +209,7 @@ export class Logger {
         operation += ' ' + className;
       }
       this.throwError(`private constructor; use ${method}from* methods`, 'UNSUPPORTED_OPERATION', {
+          // @ts-expect-error
         operation,
       });
     }
@@ -216,11 +221,13 @@ export class Logger {
     }
 
     this.assert(count >= expectedCount, 'missing arguemnt' + message, 'MISSING_ARGUMENT', {
+        // @ts-expect-error
       count: count,
       expectedCount: expectedCount,
     });
 
     this.assert(count >= expectedCount, 'too many arguemnts' + message, 'UNEXPECTED_ARGUMENT', {
+       // @ts-expect-error
       count: count,
       expectedCount: expectedCount,
     });
@@ -276,7 +283,7 @@ export class Logger {
           this.throwArgumentError(`invalid numeric string: ${e.message}`, name || 'value', value);
         }
     }
-    return this.throwArgumentError('invalid numeric value', name || 'value', value);
+ //   return this.throwArgumentError('invalid numeric value', name || 'value', value);
   }
 
   getBigInt(value: BigNumberish, name?: string): bigint {
@@ -301,7 +308,7 @@ export class Logger {
           );
         }
     }
-    return this.throwArgumentError('invalid BigNumberish value', name || 'value', value);
+   // return this.throwArgumentError('invalid BigNumberish value', name || 'value', value);
   }
 
   #log(logLevel: LogLevel, args: Array<any>): void {
@@ -309,6 +316,7 @@ export class Logger {
     if (LogLevels[level] == null) {
       this.throwArgumentError('invalid log level name', 'logLevel', logLevel);
     }
+    // @ts-ignore
     if (_logLevel > LogLevels[level]) {
       return;
     }

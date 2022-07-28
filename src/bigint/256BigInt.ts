@@ -63,7 +63,7 @@ function validateAndNormalizeHexString(hex: string): string {
     throw new Error(
       `Expected a hex string encoded byte array with an optional '0x' prefix but received ${hex}`,
     );
-  return match[1];
+  return match[1] as any;
 }
 
 function twosComplement(value: bigint, numberOfBits: number): bigint {
